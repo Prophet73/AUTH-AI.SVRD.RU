@@ -24,6 +24,7 @@ app = FastAPI(
     description="Centralized OAuth2/SSO Authentication Service",
     version="1.0.0",
     lifespan=lifespan,
+    redirect_slashes=False,
 )
 
 # CORS

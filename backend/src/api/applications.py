@@ -22,7 +22,7 @@ from ..services.oauth_service import oauth_service
 router = APIRouter(prefix="/api/applications", tags=["applications"])
 
 
-@router.get("/", response_model=List[ApplicationListItem])
+@router.get("", response_model=List[ApplicationListItem])
 async def list_applications(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
