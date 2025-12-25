@@ -142,6 +142,7 @@ async def check_auth(
 async def dev_login(
     request: Request,
     response: Response,
+    redirect_to: str = "http://localhost:5173/",
     db: AsyncSession = Depends(get_db),
 ):
     """Dev-only: Create test user and login (bypasses SSO)."""
@@ -169,15 +170,13 @@ async def dev_login(
         expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
 
-    # Get origin from request to redirect back properly
+    # Use redirect_to parameter or try to get origin from request
+    redirect_url = redirect_to
     origin = request.headers.get("origin") or request.headers.get("referer", "").rstrip("/")
-    if origin:
-        # Extract just the origin (protocol + host + port)
+    if origin and redirect_to == "http://localhost:5173/":
         from urllib.parse import urlparse
         parsed = urlparse(origin)
         redirect_url = f"{parsed.scheme}://{parsed.netloc}/"
-    else:
-        redirect_url = "/"
 
     # Redirect to dashboard
     redirect_response = RedirectResponse(url=redirect_url, status_code=302)
