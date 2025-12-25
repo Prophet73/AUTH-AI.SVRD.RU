@@ -20,15 +20,23 @@ fi
 # Rebuild and restart
 echo ""
 echo "=== Rebuilding containers ==="
-docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml --env-file .env.prod build --no-cache
 
 echo ""
 echo "=== Restarting containers ==="
 docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
 
 echo ""
+echo "=== Waiting for services ==="
+sleep 5
+
+echo ""
 echo "=== Container Status ==="
 docker compose -f docker-compose.prod.yml ps
+
+echo ""
+echo "=== Backend Logs (last 10 lines) ==="
+docker compose -f docker-compose.prod.yml logs --tail 10 backend
 
 echo ""
 echo "=== Update complete ==="

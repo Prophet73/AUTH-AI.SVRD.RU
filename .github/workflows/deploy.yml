@@ -19,6 +19,8 @@ jobs:
           script: |
             cd /opt/hub
             git pull origin main
-            docker compose -f docker-compose.prod.yml build --no-cache
-            docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
-            docker compose -f docker-compose.prod.yml ps
+            sudo docker compose -f docker-compose.prod.yml --env-file .env.prod build --no-cache
+            sudo docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
+            sleep 5
+            sudo docker compose -f docker-compose.prod.yml ps
+            sudo docker compose -f docker-compose.prod.yml logs --tail 10 backend
