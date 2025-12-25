@@ -1,7 +1,7 @@
 """Hub - OAuth2/SSO Authentication Service."""
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Depends, Response
+from fastapi import FastAPI, Depends, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -53,8 +53,9 @@ async def health_check():
 async def sso_callback_alias(
     code: str,
     state: str,
+    request: Request,
     response: Response,
     db: AsyncSession = Depends(get_db),
 ):
     """Alias for SSO callback (ADFS registered redirect_uri)."""
-    return await sso_callback(code=code, state=state, response=response, db=db)
+    return await sso_callback(code=code, state=state, request=request, response=response, db=db)

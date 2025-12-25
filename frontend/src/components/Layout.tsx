@@ -26,7 +26,11 @@ export default function Layout({ children }: LayoutProps) {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <User className="w-4 h-4" />
-                <span>{user?.display_name || user?.email}</span>
+                <span>
+                  {user?.last_name && user?.first_name 
+                    ? `${user.last_name} ${user.first_name} ${user.middle_name || ''}`.trim()
+                    : user?.display_name || user?.email}
+                </span>
               </div>
               <button
                 onClick={logout}

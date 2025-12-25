@@ -5,6 +5,9 @@ interface User {
   id: string
   email: string
   display_name: string | null
+  first_name: string | null
+  last_name: string | null
+  middle_name: string | null
   department: string | null
   job_title: string | null
   is_admin: boolean

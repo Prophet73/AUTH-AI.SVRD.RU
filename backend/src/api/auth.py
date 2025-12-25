@@ -34,6 +34,7 @@ async def sso_login(request: Request, redirect_to: str = "/"):
 async def sso_callback(
     code: str,
     state: str,
+    request: Request,
     response: Response,
     db: AsyncSession = Depends(get_db),
 ):
@@ -58,10 +59,14 @@ async def sso_callback(
             )
 
         # Extract user info from claims
-        # ADFS claims mapping (may vary by configuration)
+        # ADFS claims mapping (OpenID Connect standard)
         sso_id = claims.get("sub") or claims.get("oid") or claims.get("upn")
         email = claims.get("email") or claims.get("upn") or claims.get("unique_name")
-        display_name = claims.get("name") or claims.get("given_name", "")
+        first_name = claims.get("given_name")
+        last_name = claims.get("family_name")
+        middle_name = claims.get("middle_name")
+        # display_name = ФИО или name из claims
+        display_name = claims.get("name") or f"{last_name or ''} {first_name or ''} {middle_name or ''}".strip()
         department = claims.get("department")
         job_title = claims.get("jobTitle") or claims.get("title")
         groups = claims.get("groups", [])
@@ -78,6 +83,9 @@ async def sso_callback(
             sso_id=sso_id,
             email=email,
             display_name=display_name,
+            first_name=first_name,
+            last_name=last_name,
+            middle_name=middle_name,
             department=department,
             job_title=job_title,
             ad_groups=groups,
@@ -95,11 +103,15 @@ async def sso_callback(
             status_code=status.HTTP_302_FOUND
         )
 
+        # Determine if request came via HTTPS (check X-Forwarded-Proto from reverse proxy)
+        forwarded_proto = request.headers.get("x-forwarded-proto", "http")
+        is_secure = forwarded_proto == "https" or request.url.scheme == "https"
+
         redirect_response.set_cookie(
             key="hub_session",
             value=access_token,
             httponly=True,
-            secure=True,  # Set to False for local development
+            secure=is_secure,
             samesite="lax",
             max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         )

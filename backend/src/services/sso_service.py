@@ -142,6 +142,9 @@ class SSOService:
         sso_id: str,
         email: str,
         display_name: Optional[str] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        middle_name: Optional[str] = None,
         department: Optional[str] = None,
         job_title: Optional[str] = None,
         ad_groups: Optional[list] = None,
@@ -160,6 +163,9 @@ class SSOService:
             # Update user info from AD
             user.email = email
             user.display_name = display_name or user.display_name
+            user.first_name = first_name or user.first_name
+            user.last_name = last_name or user.last_name
+            user.middle_name = middle_name or user.middle_name
             user.department = department or user.department
             user.job_title = job_title or user.job_title
             if ad_groups is not None:
@@ -174,6 +180,9 @@ class SSOService:
             sso_id=sso_id,
             email=email,
             display_name=display_name,
+            first_name=first_name,
+            last_name=last_name,
+            middle_name=middle_name,
             department=department,
             job_title=job_title,
             ad_groups=ad_groups or [],
