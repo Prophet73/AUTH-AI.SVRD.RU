@@ -4,6 +4,7 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, String, JSON
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from ..db.base import Base
@@ -40,12 +41,16 @@ class Application(Base):
     description = Column(String(1000))
     base_url = Column(String(500))
     is_active = Column(Boolean, default=True)
+    is_public = Column(Boolean, default=False)  # If True, visible to all users
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
     )
+
+    # Relationships
+    access_rules = relationship("ApplicationAccess", back_populates="application", lazy="selectin")
 
     def __repr__(self) -> str:
         return f"<Application {self.name}>"

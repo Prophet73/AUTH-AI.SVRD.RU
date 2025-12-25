@@ -14,6 +14,24 @@ from .oauth import (
     OIDCDiscovery,
     ErrorResponse,
 )
+from .admin import (
+    UserGroupBase,
+    UserGroupCreate,
+    UserGroupUpdate,
+    UserGroupResponse,
+    UserGroupListResponse,
+    UserGroupMemberInfo,
+    AccessGrantRequest,
+    AccessRevokeRequest,
+    ApplicationAccessInfo,
+    UserAccessResponse,
+    ApplicationAccessResponse,
+    AdminStatsResponse,
+    UserListResponse,
+    UserUpdateRequest,
+    BulkUserActionRequest,
+    BulkGroupMembershipRequest,
+)
 
 __all__ = [
     "UserBase",
@@ -30,4 +48,21 @@ __all__ = [
     "TokenResponse",
     "OIDCDiscovery",
     "ErrorResponse",
+    # Admin schemas
+    "UserGroupBase",
+    "UserGroupCreate",
+    "UserGroupUpdate",
+    "UserGroupResponse",
+    "UserGroupListResponse",
+    "UserGroupMemberInfo",
+    "AccessGrantRequest",
+    "AccessRevokeRequest",
+    "ApplicationAccessInfo",
+    "UserAccessResponse",
+    "ApplicationAccessResponse",
+    "AdminStatsResponse",
+    "UserListResponse",
+    "UserUpdateRequest",
+    "BulkUserActionRequest",
+    "BulkGroupMembershipRequest",
 ]

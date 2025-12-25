@@ -3,6 +3,7 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, String, JSON
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from ..db.base import Base
@@ -31,6 +32,20 @@ class User(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+
+    # Relationships
+    groups = relationship(
+        "UserGroup",
+        secondary="user_group_members",
+        back_populates="members",
+        lazy="selectin"
+    )
+    application_access = relationship(
+        "ApplicationAccess",
+        back_populates="user",
+        foreign_keys="ApplicationAccess.user_id",
+        lazy="selectin"
     )
 
     def __repr__(self) -> str:

@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .core.config import settings
-from .api import auth_router, oauth_router, applications_router
+from .api import auth_router, oauth_router, applications_router, admin_router
 from .api.auth import sso_callback
 from .db.base import get_db
 
@@ -40,6 +40,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(oauth_router)
 app.include_router(applications_router)
+app.include_router(admin_router)
 
 
 @app.get("/health")

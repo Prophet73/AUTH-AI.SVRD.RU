@@ -17,3 +17,6 @@ httpx==0.28.1
 # Utils
 python-dotenv==1.0.1
 python-multipart==0.0.9
+
+# Admin tools
+openpyxl==3.1.2
